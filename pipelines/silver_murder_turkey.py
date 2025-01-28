@@ -4,13 +4,13 @@ import os
 STORAGE_ACCOUNT = os.getenv('STORAGE_ACCOUNT')
 STORAGE_ACCOUNT_KEY = os.getenv('STORAGE_ACCOUNT_KEY')
 
-@dlt.table(name='turkey_murder', comment='turkey murder data')
+@dlt.table(name='silver_turkey_murder', comment='silver turkey murder data')
 def silver_turkey_murder():
     spark.conf.set(STORAGE_ACCOUNT, STORAGE_ACCOUNT_KEY)
     turkey_df = spark.read\
                     .option("header", "true")\
                     .option("inferSchema", "true")\
-                    .csv("abfss://datasets@tfmstorageacc.dfs.core.windows.net/violence_against_women_turkey.csv")
+                    .csv("abfss://datasets@tfmstorageacc.dfs.core.windows.net/violence_against _women_turkey.csv")
 
     return turkey_df.withColumn(
         'year',

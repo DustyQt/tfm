@@ -4,7 +4,7 @@ import os
 STORAGE_ACCOUNT = os.getenv('STORAGE_ACCOUNT')
 STORAGE_ACCOUNT_KEY = os.getenv('STORAGE_ACCOUNT_KEY')
 
-@dlt.table(name='pacific_violence', comment='Pacific violence data')
+@dlt.table(name='silver_pacific_violence', comment='Silver Pacific violence data')
 def silver_pacific_violence():
     spark.conf.set(STORAGE_ACCOUNT, STORAGE_ACCOUNT_KEY)
     pacific_df = spark.read\

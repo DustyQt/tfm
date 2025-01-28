@@ -2,7 +2,7 @@ import pyspark.sql.functions as F
 import os
 
 
-@dlt.table(name='country', comment='Country data')
+@dlt.table(name='silver_country', comment='silver Country data')
 def silver_country():
     country_df = spark.table('hive_metastore.dynamodb.population_female')
     return country_df.filter(
