@@ -30,8 +30,8 @@ def silver_violence_india():
     ).withColumn(
         'type_of_violence', F.lit('any')
     ).select(
-        F.col('year'),
         F.col('country'),
+        F.col('year'),
         F.col('state'),
         F.col('type_of_violence'),
         F.col('total_cases')
@@ -42,8 +42,8 @@ def silver_violence_india():
     ).withColumn(
         'state', F.lit('all')
     ).select(
-        F.col('year'),
         F.col('country'),
+        F.col('year'),
         F.col('state'),
         F.col('type_of_violence'),
         F.col('total_cases')
