@@ -26,5 +26,5 @@ def silver_violence_malaysia():
         F.col('type_of_violence'),
         F.col('total_cases')
     )
-    return malaysia_df_any_violence = malaysia_df_filtered.union(malaysa_df_any)
+    return malaysia_df_filtered.union(malaysa_df_any)
     

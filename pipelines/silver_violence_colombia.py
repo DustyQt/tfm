@@ -4,8 +4,8 @@ import os
 STORAGE_ACCOUNT = os.getenv('STORAGE_ACCOUNT')
 STORAGE_ACCOUNT_KEY = os.getenv('STORAGE_ACCOUNT_KEY')
 
-@dlt.table(name='silver_colombia_violence', comment='silver colombia violence data')
-def silver_colombia_violence():
+@dlt.table(name='silver_violence_colombia', comment='silver colombia violence data')
+def silver_violence_colombia():
     spark.conf.set(STORAGE_ACCOUNT, STORAGE_ACCOUNT_KEY)
     colombian_df = spark.read\
                     .option("header", "true")\
@@ -53,5 +53,30 @@ def silver_colombia_violence():
         F.col('age_group'),
         F.col('total_cases'),
     )
-
-    return colombian_df_any.union(colombian_df_perpetrator)
+    colombian_df_aggregated =colombian_df_any.union(colombian_df_perpetrator)
+    colombian_df_all = colombian_df_aggregated.groupBy('year', 'country', 'perpetrator', 'age_group').agg(
+    F.sum('total_cases').alias('total_cases')
+    ).withColumn(
+        'department', F.lit('all')
+    ).select(
+        F.col('year'),
+        F.col('country'),
+        F.col('department'),
+        F.col('perpetrator'),
+        F.col('age_group'),
+        F.col('total_cases')
+    )
+    colombian_df_aggregated = colombian_df_aggregated.union(colombian_df_all)
+    colombian_df_all = colombian_df_aggregated.groupBy('year', 'country' ,'department', 'perpetrator').agg(
+        F.sum('total_cases').alias('total_cases')
+    ).withColumn(
+        'age_group', F.lit('any')
+    ).select(
+        F.col('year'),
+        F.col('country'),
+        F.col('department'),
+        F.col('perpetrator'),
+        F.col('age_group'),
+        F.col('total_cases')
+    )
+    return colombian_df_aggregated.union(colombian_df_all)

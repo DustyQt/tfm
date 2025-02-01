@@ -4,8 +4,8 @@ import os
 STORAGE_ACCOUNT = os.getenv('STORAGE_ACCOUNT')
 STORAGE_ACCOUNT_KEY = os.getenv('STORAGE_ACCOUNT_KEY')
 
-@dlt.table(name='silver_turkey_murder', comment='silver turkey murder data')
-def silver_turkey_murder():
+@dlt.table(name='silver_murder_turkey', comment='silver turkey murder data')
+def silver_murder_turkey():
     spark.conf.set(STORAGE_ACCOUNT, STORAGE_ACCOUNT_KEY)
     turkey_df = spark.read\
                     .option("header", "true")\
