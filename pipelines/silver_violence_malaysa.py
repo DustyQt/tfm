@@ -21,8 +21,8 @@ def silver_violence_malaysia():
     ).withColumn(
         'type_of_violence', F.lit('any')
     ).select(
-        F.col('year'),
         F.col('country'),
+        F.col('year'),
         F.col('type_of_violence'),
         F.col('total_cases')
     )

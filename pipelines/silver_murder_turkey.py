@@ -12,20 +12,28 @@ def silver_murder_turkey():
                     .option("inferSchema", "true")\
                     .csv("abfss://datasets@tfmstorageacc.dfs.core.windows.net/violence_against _women_turkey.csv")
 
-    return turkey_df.withColumn(
+    turkey_df_aggregated = turkey_df.withColumn(
         'year',
         F.year(F.to_date(F.col('Date'), 'dd/MM/yyyy')),
     ).withColumn(
-        'country', F.lit('turkey'),
-    ).withColumn(
-        'age_group', F.lit('any'),
+        'country', F.lit('turkiye'),
     ).where(
         F.col('year').isNotNull(),
     ).select(
-        F.col('age_group'),
         F.col('year'),
         F.col('country'),
         F.col('Province').alias('province'),
-    ).groupBy('age_group', 'year', 'country', 'province').agg(
+    ).groupBy('year', 'country', 'province').agg(
         F.count('*').alias('total_cases'),
     )
+    turkey_df_all = turkey_df_aggregated.withColumn(
+        'Province', F.lit('all'),
+    ).select(
+        F.col('year'),
+        F.col('country'),
+        F.col('Province').alias('province'),
+        F.col('total_cases'),
+    ).groupBy('year', 'country', 'province').agg(
+        F.sum('total_cases').alias('total_cases'),
+    )
+    return turkey_df_aggregated.union(turkey_df_all)
